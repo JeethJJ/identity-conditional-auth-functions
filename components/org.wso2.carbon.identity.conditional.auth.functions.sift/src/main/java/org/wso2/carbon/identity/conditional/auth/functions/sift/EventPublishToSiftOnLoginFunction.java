@@ -7,8 +7,8 @@ import org.wso2.carbon.identity.application.authentication.framework.config.mode
  * Interface for the Sift login authentication functions.
  */
 @FunctionalInterface
-public interface CallSiftOnLoginFunction {
+public interface EventPublishToSiftOnLoginFunction {
 
-    double getSiftRiskScoreForLogin(JsAuthenticationContext context, JsServletRequest request, String loginStatus,
-                                    String predictionType, String siftApiKey, String siftAccountID);
+    void publishLoginEventInfo(JsAuthenticationContext context, JsServletRequest request, String loginStatus,
+                               String siftApiKey, String siftAccountID);
 }

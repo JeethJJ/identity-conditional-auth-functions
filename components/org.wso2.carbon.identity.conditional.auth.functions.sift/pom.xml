@@ -57,6 +57,10 @@
             <artifactId>pax-logging-api</artifactId>
             <version>${pax.logging.api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ua.parser.wso2</groupId>
+            <artifactId>ua-parser</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

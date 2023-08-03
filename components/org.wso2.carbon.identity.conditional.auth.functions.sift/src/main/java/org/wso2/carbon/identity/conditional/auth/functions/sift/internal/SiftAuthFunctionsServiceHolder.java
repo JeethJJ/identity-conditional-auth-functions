@@ -9,6 +9,7 @@ import org.wso2.carbon.user.core.service.RealmService;
  * Class to hold services discovered via OSGI on this component.
  */
 public class SiftAuthFunctionsServiceHolder {
+
     private static final SiftAuthFunctionsServiceHolder instance = new SiftAuthFunctionsServiceHolder();
 
     private RealmService realmService;
