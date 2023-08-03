@@ -110,10 +110,8 @@
                         </Import-Package>
                         <Embed-Dependency>
                             sift-java;scope=compile|runtime;inline=false,
-<!--                            threetenbp;scope=compile|runtime;inline=false,-->
                             okhttp;scope=compile|runtime;inline=false,
                             okio;scope=compile|runtime;inline=false,
-<!--                            kotlin.jvm.internal.markers;scope=compile|runtime;inline=false,-->
                         </Embed-Dependency>
                     </instructions>
                 </configuration>

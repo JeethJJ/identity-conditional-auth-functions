@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.carbon.identity.conditional.auth.functions.sift.util;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,15 +33,16 @@ import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 import ua_parser.Client;
 import ua_parser.Parser;
 
+/**
+ * Data transfer object for the Sift event payload.
+ */
 public class SiftDTO {
 
     private static final Log LOG = LogFactory.getLog(SiftDTO.class);
     private final JsAuthenticationContext context;
     private final JsServletRequest request;
-    //    private UniqueIDUserStoreManager uniqueIDUserStoreManager;
     private String type;
     private int tenantId;
-    //User infomation
     private String userId;
     private String internalUserId;
     private String userEmail;
@@ -182,6 +201,9 @@ public class SiftDTO {
         }
     }
 
+    /**
+     * Concatenate the version string.
+     */
     private String concatenateVersionString(String majorVersion, String minorVersion, String patchVersion,
                                             String patchMinorVersion) {
 
@@ -201,6 +223,12 @@ public class SiftDTO {
         return result.toString();
     }
 
+    /**
+     * Get the email claim value for the given username.
+     *
+     * @param username Fully qualified username of the user.
+     * @return Email claim value.
+     */
     private String getEmailValueForUsername(String username) {
 
         UserRealm userRealm;
