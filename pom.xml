@@ -487,7 +487,6 @@
         <identity.governance.version>1.1.17</identity.governance.version>
         <identity.governance.import.version.range>[1.5.70,3.0)</identity.governance.import.version.range>
         <identity.event.handler.notification.version>[1.0.23,2.0.0)</identity.event.handler.notification.version>
-        <sift.version.range>[3.9.0,3.12.0]</sift.version.range>
 
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
         <pax.logging.api.version>1.10.1</pax.logging.api.version>
@@ -500,6 +499,7 @@
         <com.h2database.version>1.2.140.wso2v3</com.h2database.version>
         <carbon.crypto.version>1.1.13</carbon.crypto.version>
         <com.siftscience.version>3.10.0</com.siftscience.version>
+        <sift.version.range>[3.9.0,3.12.0]</sift.version.range>
         <ua_parser.version>1.5.4.wso2v1</ua_parser.version>
         <ua_parser.version.range>[1.3.0, 2.0.0)</ua_parser.version.range>
 
