@@ -114,6 +114,8 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
                            Map<String, Object> eventHandlers) {
 
         AsyncProcess asyncProcess = new AsyncProcess((authenticationContext, asyncReturn) -> {
+            LOG.info("Starting the callChoreo function for session data key: " +
+                    authenticationContext.getContextIdentifier());
             String epUrl = connectionMetaData.get(URL_VARIABLE_NAME);
             try {
                 if (!isValidChoreoDomain(epUrl)) {
@@ -128,9 +130,12 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
                 String accessToken = choreoAccessTokenCache.getValueFromCache(accessTokenRequestHelper.getConsumerKey(),
                         tenantDomain);
                 if (StringUtils.isNotEmpty(accessToken) && !isTokenExpired(accessToken)) {
+                    LOG.info("Unexpired access token available in cache. Session data key: " +
+                            authenticationContext.getContextIdentifier());
                     accessTokenRequestHelper.callChoreoEndpoint(accessToken);
                 } else {
-                    LOG.debug("Requesting the access token from Choreo");
+                    LOG.info("Requesting the access token from Choreo. Session data key: " +
+                            authenticationContext.getContextIdentifier());
                     requestAccessToken(tenantDomain, accessTokenRequestHelper);
                 }
             } catch (IllegalArgumentException e) {
@@ -269,6 +274,8 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
 
         CloseableHttpAsyncClient client = ChoreoFunctionServiceHolder.getInstance().getClientManager()
                 .getClient(tenantDomain);
+        LOG.info("CloseableHttpAsyncClient executing access token request for session data key: " +
+                accessTokenRequestHelper.authenticationContext.getContextIdentifier());
         client.execute(request, accessTokenRequestHelper);
     }
 
@@ -406,12 +413,16 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
                 request.setEntity(new StringEntity(jsonObject.toJSONString()));
                 CloseableHttpAsyncClient client = ChoreoFunctionServiceHolder.getInstance().getClientManager()
                         .getClient(this.authenticationContext.getTenantDomain());
+                LOG.info("Calling Choreo endpoint for session data key: " +
+                        authenticationContext.getContextIdentifier() + " with payload: " + jsonObject.toJSONString());
                 client.execute(request, new FutureCallback<HttpResponse>() {
 
                     @Override
                     public void completed(final HttpResponse response) {
 
                         try {
+                            LOG.info("Choreo call completed for session data key: " +
+                                    authenticationContext.getContextIdentifier());
                             handleChoreoEndpointResponse(response);
                         } catch (Exception e) {
                             LOG.error("Error while proceeding after handling the response from Choreo call for " +
@@ -494,6 +505,8 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
                     } else {
                         successResponseBody = this.gson.fromJson(responseBodyString, responseBodyType);
                     }
+                    LOG.info("Received 2xx response from Choreo. Status Code: " + statusCode +
+                            " Session data key: " + authenticationContext.getContextIdentifier());
                     this.asyncReturn.accept(authenticationContext, successResponseBody, Constants.OUTCOME_SUCCESS);
                 } else if (statusCode == HTTP_STATUS_UNAUTHORIZED) {
                     responseBodyType = new TypeToken<Map<String, String>>() { }.getType();
@@ -501,6 +514,8 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
                             .fromJson(EntityUtils.toString(response.getEntity()), responseBodyType);
 
                     if (ERROR_CODE_ACCESS_TOKEN_INACTIVE.equals(responseBody.get(CODE))) {
+                        LOG.info("Access token inactive for session data key: " +
+                                authenticationContext.getContextIdentifier());
                         handleExpiredToken();
                     } else {
                         LOG.warn("Received 401 response from Choreo. Session data key: " +
@@ -534,6 +549,8 @@ public class CallChoreoFunctionImpl implements CallChoreoFunction {
         private void handleExpiredToken() throws IOException, FrameworkException {
 
             if (tokenRequestAttemptCount.get() < MAX_TOKEN_REQUEST_ATTEMPTS) {
+                LOG.info("Retrying token request for session data key: " +
+                        this.authenticationContext.getContextIdentifier());
                 requestAccessToken(this.authenticationContext.getTenantDomain(), this);
                 tokenRequestAttemptCount.incrementAndGet();
             } else {
