@@ -18,8 +18,10 @@
 
 package org.wso2.carbon.identity.conditional.auth.functions.user.model;
 
+import org.wso2.carbon.identity.application.authentication.framework.config.model.graph.JsGenericGraphBuilderFactory;
+import org.wso2.carbon.identity.application.authentication.framework.config.model.graph.graaljs.JsGraalGraphBuilderFactory;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.graph.openjdk.nashorn.JsOpenJdkNashornGraphBuilderFactory;
-import org.wso2.carbon.identity.application.authentication.framework.internal.FrameworkServiceDataHolder;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 
 /**
  * Singleton to get the appropriate Javascript Proxy Object Wrapper Factory.
@@ -32,9 +34,12 @@ public class JsWrapperFactoryProvider {
 
     private JsWrapperFactoryProvider() {
 
-        if (FrameworkServiceDataHolder.getInstance().
-                getJsGraphBuilderFactory() instanceof JsOpenJdkNashornGraphBuilderFactory) {
+        JsGenericGraphBuilderFactory jsGraphBuilderFactory =
+                FrameworkUtils.createJsGenericGraphBuilderFactoryFromConfig();
+        if (jsGraphBuilderFactory instanceof JsOpenJdkNashornGraphBuilderFactory) {
             jsWrapperBaseFactory = new JsOpenJdkNashornWrapperFactory();
+        } else if (jsGraphBuilderFactory instanceof JsGraalGraphBuilderFactory) {
+            jsWrapperBaseFactory = new JsGraalWrapperFactory();
         } else {
             jsWrapperBaseFactory = new JsWrapperFactory();
         }

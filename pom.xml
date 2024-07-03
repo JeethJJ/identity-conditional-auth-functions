@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.carbon.identity.conditional.auth.functions</groupId>
     <artifactId>identity-conditional-auth-functions</artifactId>
-    <version>1.2.32-SNAPSHOT</version>
+    <version>1.2.57-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - IAM Conditional Authentication Functions</name>
     <url>http://wso2.org</url>
@@ -53,6 +53,7 @@
         <module>components/org.wso2.carbon.identity.conditional.auth.functions.jwt.decode</module>
         <module>features/org.wso2.carbon.identity.conditional.auth.functions.server.feature</module>
         <module>components/org.wso2.carbon.identity.conditional.auth.functions.sift</module>
+        <module>components/org.wso2.carbon.identity.conditional.auth.functions.utils</module>
     </modules>
 
     <dependencyManagement>
@@ -100,6 +101,16 @@
             <dependency>
                 <groupId>org.wso2.carbon.identity.conditional.auth.functions</groupId>
                 <artifactId>org.wso2.carbon.identity.conditional.auth.functions.jwt.decode</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.central.log.mgt</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.conditional.auth.functions</groupId>
+                <artifactId>org.wso2.carbon.identity.conditional.auth.functions.utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -159,14 +170,19 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.multi.attribute.login.mgt</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.json.wso2</groupId>
                 <artifactId>json</artifactId>
                 <version>${json.wso2.version}</version>
             </dependency>
             <dependency>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-            <version>${json-smart.version}</version>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
             </dependency>
 
             <!-- Test related dependencies -->
@@ -284,6 +300,12 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>org.graalvm.sdk</groupId>
+                <artifactId>graal-sdk</artifactId>
+                <version>${graalvm.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>jsr311-api</artifactId>
                 <version>1.1.1</version>
@@ -303,6 +325,12 @@
                 <groupId>ua.parser.wso2</groupId>
                 <artifactId>ua-parser</artifactId>
                 <version>${ua_parser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
+                <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
+                <version>${identity.organization.management.core.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -478,12 +506,13 @@
         </plugins>
     </build>
     <properties>
-        <carbon.kernel.version>4.6.3-m5</carbon.kernel.version>
+        <carbon.kernel.version>4.9.17</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[4.6.0, 5.0.0)</carbon.kernel.package.import.version.range>
         <carbon.user.package.import.version.range>[1.0.1, 2.0.0)</carbon.user.package.import.version.range>
-        <carbon.identity.framework.version>5.22.0</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.2.29</carbon.identity.framework.version>
+        <identity.organization.management.core.version>1.0.89</identity.organization.management.core.version>
         <carbon.identity.framework.testutils.version>5.20.447</carbon.identity.framework.testutils.version>
-        <carbon.identity.package.import.version.range>[5.14.0, 7.0.0)</carbon.identity.package.import.version.range>
+        <carbon.identity.package.import.version.range>[5.14.0, 8.0.0)</carbon.identity.package.import.version.range>
         <identity.governance.version>1.1.17</identity.governance.version>
         <identity.governance.import.version.range>[1.5.70,3.0)</identity.governance.import.version.range>
         <identity.event.handler.notification.version>[1.0.23,2.0.0)</identity.event.handler.notification.version>
@@ -534,6 +563,7 @@
         <org.osgi.framework.imp.pkg.version.range>[1.9.0,2.0.0)</org.osgi.framework.imp.pkg.version.range>
         <xml.apis.version>1.4.01</xml.apis.version>
         <nashorn.core.version>15.3</nashorn.core.version>
+        <graalvm.version>22.3.4</graalvm.version>
         <sonar.coverage.exclusions>
             **/*Exception.java,
             **/*Constants*.java,

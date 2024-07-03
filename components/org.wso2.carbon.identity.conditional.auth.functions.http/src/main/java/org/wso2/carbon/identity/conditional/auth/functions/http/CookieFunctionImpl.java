@@ -45,12 +45,14 @@ import javax.servlet.http.Cookie;
 /**
  * Implementation of the setCookie and getCookieValue functions.
  */
+@Deprecated
 public class CookieFunctionImpl implements SetCookieFunction, GetCookieFunction {
 
     private static final Log log = LogFactory.getLog(CookieFunctionImpl.class);
     private static final String ENABLE_ADAPTIVE_SCRIPT_COOKIE_LEGACY_MODE = "enableAdaptiveScriptCookieLegacyMode";
 
     @Override
+    @Deprecated
     public void setCookie(JsServletResponse response, String name, Object... params) {
 
         Map<String, Object> properties = null;
@@ -117,10 +119,11 @@ public class CookieFunctionImpl implements SetCookieFunction, GetCookieFunction 
             Optional.ofNullable((sameSite != null) ? SameSiteCookie.valueOf(sameSite) : null)
                     .ifPresent(cookie::setSameSite);
         }
-        response.addCookie(cookie);
+        response.getWrapped().getWrapped().addCookie(cookie);
     }
 
     @Override
+    @Deprecated
     public String getCookieValue(JsServletRequest request, Object... params) {
 
         Map<String, Object> properties = null;

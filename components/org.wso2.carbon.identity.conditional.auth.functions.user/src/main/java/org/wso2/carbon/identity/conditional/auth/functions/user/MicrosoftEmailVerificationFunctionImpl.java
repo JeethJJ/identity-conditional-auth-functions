@@ -22,6 +22,7 @@ import com.nimbusds.jose.util.JSONObjectUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.graalvm.polyglot.HostAccess;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.graph.js.JsAuthenticationContext;
 
 import java.text.ParseException;
@@ -45,6 +46,7 @@ public class MicrosoftEmailVerificationFunctionImpl implements MicrosoftEmailVer
             "https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0";
 
     @Override
+    @HostAccess.Export
     public boolean checkMicrosoftEmailVerification(JsAuthenticationContext context) {
 
         if (context.getWrapped().getParameter(ID_TOKEN) == null) {
@@ -78,7 +80,7 @@ public class MicrosoftEmailVerificationFunctionImpl implements MicrosoftEmailVer
         byte[] decoded = Base64.decodeBase64(base64Body.getBytes());
         Set<Map.Entry<String, Object>> jwtAttributeSet = new HashSet<>();
         try {
-            jwtAttributeSet = JSONObjectUtils.parseJSONObject(new String(decoded)).entrySet();
+            jwtAttributeSet = JSONObjectUtils.parse(new String(decoded)).entrySet();
         } catch (ParseException e) {
             LOG.error("Error occurred while parsing JWT provided by federated IDP: ", e);
         }
